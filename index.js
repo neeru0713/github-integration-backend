@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json()); // sufficient for JSON parsing
 app.use(bodyParser.json());
 
-app.use("/", userRoutes);
+app.use("/api", userRoutes);
 
 // Test route
 app.get("/", (req, res) => {
@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 
 // MongoDB connection
 mongoose
-  .connect("mongodb://localhost:27017/mydatabase", {
+  .connect("mongodb://localhost:27017/githubintegrationbackend", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
