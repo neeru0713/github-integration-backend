@@ -44,7 +44,7 @@ async function mutualFollowers(username) {
     { headers }
   );
   const followers = await res.json();
-  console.log("......", followers);
+  // console.log("......", followers);
 
   followers.forEach(async (item) => {
     const isFollowing = await fetch(
@@ -67,9 +67,29 @@ async function mutualFollowers(username) {
   });
 }
 
+async function searchUsers(serchQuery) {
+
+  const filter = {};
+  if (serchQuery.username) {
+    filter.username = { $regex: serchQuery.username, $options: "i" };
+  } 
+    if (serchQuery.location) {
+      filter.location = { $regex: serchQuery.location, $options: "i" };
+      console.log("0000", filter);
+    }
+    
+    const users = await User.find(filter);
+          console.log("******", users);
+
+    return users;
+
+  
+}
+
 module.exports = {
   checkUser,
   getUserFromGithub,
   saveUser,
   mutualFollowers,
+  searchUsers,
 };

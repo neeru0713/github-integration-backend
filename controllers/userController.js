@@ -36,8 +36,23 @@ async function mutualFollowers(req, res) {
   }
 }
 
+async function searchUsers(req, res) {
+  try {
+    const serchQuery = req.query;
+    console.log(".....", serchQuery);
+    console.log("######", req.query);
+
+    const users = await userService.searchUsers(serchQuery);
+    res.status(200).json(users);
+  } catch(error) {
+    console.error("serchQuery not found");
+    res.status(500).json({ error: "serchQuery Error" });
+}
+}
+
 
   module.exports = {
     saveUser,
     mutualFollowers,
+    searchUsers,
   };
