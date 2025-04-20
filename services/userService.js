@@ -34,42 +34,8 @@ async function saveUser(user) {
   return savedUser;
 }
 
-async function mutualFollowers(username) {
-  const headers = {
-    Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
-  };
-
-  const res = await fetch(
-    `https://api.github.com/users/${username}/followers`,
-    { headers }
-  );
-  const followers = await res.json();
-  console.log("......", followers);
-
-  followers.forEach(async (item) => {
-    const isFollowing = await fetch(
-      `https://api.github.com/users/${username}/following/${item.login}`,
-      { headers }
-    );
-
-    if (isFollowing.status === 204) {
-      const user = await User.findOne({ username });
-      const existingUser = user.friends.find(
-        (friend) => friend.username === item.login
-      );
-      if (!existingUser) {
-        user.friends.push({ ...item, username: item.login });
-        await user.save();
-      }
-
-      return user;
-    }
-  });
-}
-
 module.exports = {
   checkUser,
   getUserFromGithub,
-  saveUser,
-  mutualFollowers,
+  saveUser
 };
