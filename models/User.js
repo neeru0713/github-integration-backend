@@ -54,6 +54,12 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  followers_url: {
+    type: String,
+  },
+  following_url: {
+    type: String,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
