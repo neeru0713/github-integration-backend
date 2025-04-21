@@ -39,9 +39,6 @@ async function mutualFollowers(req, res) {
 async function searchUsers(req, res) {
   try {
     const serchQuery = req.query;
-    console.log(".....", serchQuery);
-    console.log("######", req.query);
-
     const users = await userService.searchUsers(serchQuery);
     res.status(200).json(users);
   } catch(error) {
@@ -50,9 +47,20 @@ async function searchUsers(req, res) {
 }
 }
 
+async function deleteUser(req, res) {
+  try {
+    const username = req.params.username;
+    const deletedUser = await userService.deleteUser(username);
+    res.status(202).json({ user: deletedUser });
+  } catch(error) {
+    res.status(404).json({error: error.message})
+}
+}
+
 
   module.exports = {
     saveUser,
     mutualFollowers,
     searchUsers,
+    deleteUser,
   };

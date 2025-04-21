@@ -22,7 +22,6 @@ async function checkUser(username) {
 async function getUserFromGithub(username) {
   let res = await fetch(`https://api.github.com/users/${username}`);
   const user = await res.json();
-  console.log("......", user);
   return user;
 }
 
@@ -44,7 +43,7 @@ async function mutualFollowers(username) {
     { headers }
   );
   const followers = await res.json();
-  // console.log("......", followers);
+
 
   followers.forEach(async (item) => {
     const isFollowing = await fetch(
@@ -68,22 +67,25 @@ async function mutualFollowers(username) {
 }
 
 async function searchUsers(serchQuery) {
-
   const filter = {};
   if (serchQuery.username) {
     filter.username = { $regex: serchQuery.username, $options: "i" };
-  } 
-    if (serchQuery.location) {
-      filter.location = { $regex: serchQuery.location, $options: "i" };
-      console.log("0000", filter);
-    }
-    
-    const users = await User.find(filter);
-          console.log("******", users);
+  }
+  if (serchQuery.location) {
+    filter.location = { $regex: serchQuery.location, $options: "i" };
+  }
+  const users = await User.find(filter);
+  return users;
+}
 
-    return users;
-
-  
+async function deleteUser(username) {
+  const user = await User.findOne({ username: username });
+  if (!user) {
+    throw new Error("User not found")
+  }
+  user.isDeleted = true;
+  await user.save();
+  return user;
 }
 
 module.exports = {
@@ -92,4 +94,5 @@ module.exports = {
   saveUser,
   mutualFollowers,
   searchUsers,
+  deleteUser,
 };
