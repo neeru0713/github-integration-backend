@@ -88,6 +88,20 @@ async function deleteUser(username) {
   return user;
 }
 
+async function updateUser(username, updates) {
+  const updatedUser = User.findOneAndUpdate(
+    { username },
+    { $set: updates },
+    { new: true }
+  );
+  if (!updatedUser) {
+    throw new Error("User not found");
+  }
+  return updatedUser;
+}
+
+
+
 module.exports = {
   checkUser,
   getUserFromGithub,
@@ -95,4 +109,5 @@ module.exports = {
   mutualFollowers,
   searchUsers,
   deleteUser,
+  updateUser,
 };
