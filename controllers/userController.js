@@ -65,10 +65,21 @@ async function updateUser(req, res) {
   }
 }
 
+async function getAllUsers(req, res) {
+  try {
+   const sortField = req.query.sortBy;
+    const users = await userService.getUsers(sortField);
+    res.status(202).json({users})
+  } catch (error) {
+    res.status(404).json({ error: error.message });
+  }
+}
+
 module.exports = {
   saveUser,
   mutualFollowers,
   searchUsers,
   deleteUser,
   updateUser,
+  getAllUsers,
 };

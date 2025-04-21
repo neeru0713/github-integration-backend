@@ -100,7 +100,10 @@ async function updateUser(username, updates) {
   return updatedUser;
 }
 
-
+async function getUsers(sortField) {
+  const users = await User.find().sort({ [sortField]: -1 });
+  return users;
+}
 
 module.exports = {
   checkUser,
@@ -110,4 +113,5 @@ module.exports = {
   searchUsers,
   deleteUser,
   updateUser,
+  getUsers,
 };
